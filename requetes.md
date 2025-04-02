@@ -1,5 +1,44 @@
 # Requetes
 
+## Liaison entre les collections airports et flights
+
+Aggregation:
+
+``` sh
+
+db.airport.aggregate([{
+    $lookup: {
+        from: "airport",
+        localField: "APT",
+        foreignField: "APT",
+        as: "result"
+}, {
+    $unwind: "$result"
+}, {
+    $set: {
+        "APT": "$result.APT"}
+}, {
+    $project: {
+        "APT": true,
+        "APT_ZON": true,
+        "APT_PEQ": true,
+        "PAX_arr": true,
+        "PAX_dep": true,
+        "PAX_tr": true,
+        "PAX_mxt": true
+        }
+}, {
+    $merge: {
+        into: "airport",
+        on: "APT",
+        whenMatched: "merge",
+        whenNotMatched: "insert"
+        }
+}
+}
+])
+```
+
 ## 1. Compter le nombre total d'aéroports
 
 Avec une aggregation : 
@@ -447,7 +486,57 @@ Résultats :
 
 </details>
 
-## 5 Calculer la moyenne mensuelle de fret pour chaque zone
+## 5 Trouver les 5 aéroports ayant eu le plus de passagers au départ
+
+``` sh
+
+[
+  {
+    $group: {
+      '_id': '$APT',
+      'passager': {
+        '$sum': '$PAX_Depart'
+      }
+    }
+  }, {
+    $sort: {
+      'passager': -1
+    }
+  }, {
+    $limit: 5
+  }
+]
+```
+
+Résultats
+
+<details>
+
+```json
+[{
+  "_id": "LFPG",
+  "passager": 829333064
+},
+{
+  "_id": "LFPO",
+  "passager": 440858208
+},
+{
+  "_id": "LFMN",
+  "passager": 159783642
+},
+{
+  "_id": "LFLL",
+  "passager": 113762130
+},
+{
+  "_id": "LFML",
+  "passager": 110545802
+}]
+```
+</details>
+
+## 6 Calculer la moyenne mensuelle de fret pour chaque zone
 
 Aggregate : 
 
