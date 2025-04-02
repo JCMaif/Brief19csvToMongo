@@ -35,6 +35,7 @@ async function processAndExportData() {
                 flights.push({
                     AN: AN,
                     MOIS: MOIS,
+                    APT: record.APT,
                     PAX_Depart: record.APT_PAX_dep,
                     PAX_Arrivee: record.APT_PAX_arr,
                     PAX_Transit: record.APT_PAX_tr,
@@ -65,10 +66,10 @@ async function processAndExportData() {
 
         // Exporter les vols
         const flightCsvContent = [
-            "AN;MOIS;PAX_Depart;PAX_Arrivee;PAX_Transit;FRP_Depart;FRP_Arrivee;NMVT_Mixte;NMVT_Cargo" // Entête
+            "AN;MOIS;APT;PAX_Depart;PAX_Arrivee;PAX_Transit;FRP_Depart;FRP_Arrivee;NMVT_Mixte;NMVT_Cargo" // Entête
         ].concat(
             flights.map(flight =>
-                `${flight.AN};${flight.MOIS};${flight.PAX_Depart};${flight.PAX_Arrivee};${flight.PAX_Transit};${flight.FRP_Depart};${flight.FRP_Arrivee};${flight.NMVT_Mixte};${flight.NMVT_Cargo}`
+                `${flight.AN};${flight.MOIS};${flight.APT};${flight.PAX_Depart};${flight.PAX_Arrivee};${flight.PAX_Transit};${flight.FRP_Depart};${flight.FRP_Arrivee};${flight.NMVT_Mixte};${flight.NMVT_Cargo}`
             )
         ).join("\n");
         await fs.writeFile(flightFilePath, flightCsvContent, 'utf8');
