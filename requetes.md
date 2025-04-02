@@ -362,3 +362,371 @@ Résultat :
 ```
 
 </details>
+
+## 4 Calculer le nombre total de mouvements (NMVT_mixte + NMVT_cargo) par mois pour 2012
+
+Avec une aggrégation : 
+1. match : pour filtrer sur 2012
+2. group : pour grouper les résultats par mois
+3. sum : pour additionner les résultats
+4. add : pour additionner les champs
+
+```js
+db.getCollection('flights').aggregate(
+  [
+    { $match: { AN: 2012 } },
+    {
+      $group: {
+        _id: '$MOIS',
+        totalNMVT: {
+          $sum: {
+            $add: ['$NMVT_Mixte', '$NMVT_Cargo']
+          }
+        }
+      }
+    }
+  ],
+  { maxTimeMS: 60000, allowDiskUse: true }
+);
+```
+
+Résultats :
+
+<details>
+
+```json
+[{
+  "_id": 5,
+  "totalNMVT": 167003
+},
+{
+  "_id": 7,
+  "totalNMVT": 180485
+},
+{
+  "_id": 1,
+  "totalNMVT": 143083
+},
+{
+  "_id": 3,
+  "totalNMVT": 156879
+},
+{
+  "_id": 8,
+  "totalNMVT": 169007
+},
+{
+  "_id": 2,
+  "totalNMVT": 137487
+},
+{
+  "_id": 6,
+  "totalNMVT": 171311
+},
+{
+  "_id": 4,
+  "totalNMVT": 156404
+},
+{
+  "_id": 9,
+  "totalNMVT": 167169
+},
+{
+  "_id": 10,
+  "totalNMVT": 161945
+},
+{
+  "_id": 12,
+  "totalNMVT": 141882
+},
+{
+  "_id": 11,
+  "totalNMVT": 141829
+}]
+```
+
+</details>
+
+## 5 Calculer la moyenne mensuelle de fret pour chaque zone
+
+Aggregate : 
+
+```sh
+[
+  {
+    '$lookup': {
+      'from': 'airports', 
+      'localField': 'APT', 
+      'foreignField': 'APT', 
+      'as': 'airports'
+    }
+  }, {
+    '$addFields': {
+      'ZONE': {
+        '$arrayElemAt': [
+          '$airports.APT_ZON', 0
+        ]
+      }
+    }
+  }, {
+    '$addFields': {
+      'totalFret': {
+        '$add': [
+          '$FRP_Arrivee', '$FRP_Depart'
+        ]
+      }
+    }
+  }, {
+    '$group': {
+      '_id': {
+        'MOIS': '$MOIS', 
+        'APT_ZONE': '$ZONE'
+      }, 
+      'fretTotalMensuel': {
+        '$sum': '$totalFret'
+      }, 
+      'nbRecords': {
+        '$count': {}
+      }
+    }
+  }, {
+    '$addFields': {
+      'fretMoyenMensuel': {
+        '$divide': [
+          '$fretTotalMensuel', '$nbRecords'
+        ]
+      }
+    }
+  }, {
+    '$sort': {
+      '_id.ZONE': 1, 
+      '_id.MOIS': 1
+    }
+  }
+]
+```
+
+Résultats : 
+
+<details>
+
+```json
+[{
+  "_id": {
+    "MOIS": 1,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 223178,
+  "nbRecords": 1176,
+  "fretMoyenMensuel": 189.77721088435374
+},
+{
+  "_id": {
+    "MOIS": 1,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 5676156,
+  "nbRecords": 1897,
+  "fretMoyenMensuel": 2992.175013178703
+},
+{
+  "_id": {
+    "MOIS": 2,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 5663730,
+  "nbRecords": 1910,
+  "fretMoyenMensuel": 2965.303664921466
+},
+{
+  "_id": {
+    "MOIS": 2,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 234034,
+  "nbRecords": 1061,
+  "fretMoyenMensuel": 220.57869934024504
+},
+{
+  "_id": {
+    "MOIS": 3,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6549349,
+  "nbRecords": 1960,
+  "fretMoyenMensuel": 3341.5045918367346
+},
+{
+  "_id": {
+    "MOIS": 3,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 289236,
+  "nbRecords": 1144,
+  "fretMoyenMensuel": 252.82867132867133
+},
+{
+  "_id": {
+    "MOIS": 4,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 5967513,
+  "nbRecords": 1948,
+  "fretMoyenMensuel": 3063.4050308008214
+},
+{
+  "_id": {
+    "MOIS": 4,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 282041,
+  "nbRecords": 1128,
+  "fretMoyenMensuel": 250.0363475177305
+},
+{
+  "_id": {
+    "MOIS": 5,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 241199,
+  "nbRecords": 1086,
+  "fretMoyenMensuel": 222.0985267034991
+},
+{
+  "_id": {
+    "MOIS": 5,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 5958427,
+  "nbRecords": 1959,
+  "fretMoyenMensuel": 3041.565594691169
+},
+{
+  "_id": {
+    "MOIS": 6,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6092983,
+  "nbRecords": 2013,
+  "fretMoyenMensuel": 3026.817188276205
+},
+{
+  "_id": {
+    "MOIS": 6,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 231894,
+  "nbRecords": 1116,
+  "fretMoyenMensuel": 207.79032258064515
+},
+{
+  "_id": {
+    "MOIS": 7,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 244595,
+  "nbRecords": 1186,
+  "fretMoyenMensuel": 206.23524451939292
+},
+{
+  "_id": {
+    "MOIS": 7,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6150890,
+  "nbRecords": 1968,
+  "fretMoyenMensuel": 3125.4522357723577
+},
+{
+  "_id": {
+    "MOIS": 8,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 5697947,
+  "nbRecords": 1847,
+  "fretMoyenMensuel": 3084.9740119112075
+},
+{
+  "_id": {
+    "MOIS": 8,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 234937,
+  "nbRecords": 1221,
+  "fretMoyenMensuel": 192.4135954135954
+},
+{
+  "_id": {
+    "MOIS": 9,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6155001,
+  "nbRecords": 1975,
+  "fretMoyenMensuel": 3116.4562025316454
+},
+{
+  "_id": {
+    "MOIS": 9,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 229354,
+  "nbRecords": 1086,
+  "fretMoyenMensuel": 211.1915285451197
+},
+{
+  "_id": {
+    "MOIS": 10,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 251003,
+  "nbRecords": 1126,
+  "fretMoyenMensuel": 222.91563055062167
+},
+{
+  "_id": {
+    "MOIS": 10,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6579111,
+  "nbRecords": 1960,
+  "fretMoyenMensuel": 3356.6892857142857
+},
+{
+  "_id": {
+    "MOIS": 11,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 250478,
+  "nbRecords": 1092,
+  "fretMoyenMensuel": 229.37545787545787
+},
+{
+  "_id": {
+    "MOIS": 11,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6454490,
+  "nbRecords": 1879,
+  "fretMoyenMensuel": 3435.066524747206
+},
+{
+  "_id": {
+    "MOIS": 12,
+    "APT_ZONE": "OM"
+  },
+  "fretTotalMensuel": 331261,
+  "nbRecords": 1215,
+  "fretMoyenMensuel": 272.6427983539095
+},
+{
+  "_id": {
+    "MOIS": 12,
+    "APT_ZONE": "MT"
+  },
+  "fretTotalMensuel": 6525348,
+  "nbRecords": 1891,
+  "fretMoyenMensuel": 3450.7392913802223
+}]
+```
+
+</details>

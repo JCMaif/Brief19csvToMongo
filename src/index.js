@@ -39,8 +39,8 @@ async function processAndExportData() {
                     PAX_Depart: record.APT_PAX_dep,
                     PAX_Arrivee: record.APT_PAX_arr,
                     PAX_Transit: record.APT_PAX_tr,
-                    FRP_Depart: record.APT_FRP_dep,
-                    FRP_Arrivee: record.APT_FRP_arr,
+                    FRP_Depart: parseInt(record.APT_FRP_dep),
+                    FRP_Arrivee: parseInt(record.APT_FRP_arr),
                     NMVT_Mixte: record.APT_NMVT_mxt,
                     NMVT_Cargo: record.APT_NMVT_cgo,
                 });
