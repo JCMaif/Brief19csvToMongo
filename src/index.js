@@ -10,7 +10,7 @@ async function processAndExportData() {
         const files = (await fs.readdir(directoryPath)).filter(file => file.endsWith(".csv"));
         console.log("Fichiers trouvés :", files);
 
-        const airports = [];
+        const airports = new Map(); 
         const flights = [];
 
         // Étape 2 : Lire chaque fichier et traiter les colonnes
@@ -22,7 +22,7 @@ async function processAndExportData() {
             // Filtrer les colonnes pour les aéroports et les vols
             for (const record of records) {
                 // Aéroports
-                airports.push({
+                airports.set(record.APT, {
                     APT: record.APT,
                     APT_NOM: record.APT_NOM,
                     APT_ZONE: record.APT_ZON,
@@ -52,13 +52,14 @@ async function processAndExportData() {
 
         // Exporter les aéroports
         const airportCsvContent = [
-            "APT;APT_NOM;APT_ZONE;APT_PEQ",
-            ...airports.map(airport =>
+            "APT;APT_NOM;APT_ZONE;APT_PEQ", // Entête
+            ...Array.from(airports.values()).map(airport =>
                 `${airport.APT};${airport.APT_NOM};${airport.APT_ZONE};${airport.APT_PEQ}`
             )
         ].join("\n");
         await fs.writeFile(airportFilePath, airportCsvContent, 'utf8');
         console.log(`Fichier exporté : ${airportFilePath}`);
+
 
 
 
