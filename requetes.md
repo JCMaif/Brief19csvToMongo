@@ -1,0 +1,364 @@
+# Requetes
+
+## 1. Compter le nombre total d'aéroports
+
+Avec une aggregation : 
+
+```sh
+[
+  {
+    '$count': 'APT'
+  }
+]
+```
+Résultat :
+```sh
+145
+```
+
+## 2. Lister tous les aéroports d'Outre Mer
+
+Avec une requête simple :
+
+```sh
+{ APT_ZON: "OM" }
+```
+
+Résultat :
+
+<details>
+
+```json
+[{
+  "APT": "FMCZ",
+  "APT_NOM": "MAYOTTE-MARCEL HENRY",
+  "APT_ZON": "OM",
+  "APT_PEQ": 48337
+},
+{
+  "APT": "FMEE",
+  "APT_NOM": "LA REUNION-ROLAND GARROS",
+  "APT_ZON": "OM",
+  "APT_PEQ": 315566
+},
+{
+  "APT": "LFVP",
+  "APT_NOM": "ST-PIERRE-POINTE BLANCHE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 2370
+},
+{
+  "APT": "NLWW",
+  "APT_NOM": "WALLIS-HIHIFO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1097
+},
+{
+  "APT": "NTAA",
+  "APT_NOM": "TAHITI FAA'A",
+  "APT_ZON": "OM",
+  "APT_PEQ": 161573
+},
+{
+  "APT": "NTAT",
+  "APT_NOM": "TUBUAI MATAURA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 2772
+},
+{
+  "APT": "NTGI",
+  "APT_NOM": "MANIHI",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1267
+},
+{
+  "APT": "NTMD",
+  "APT_NOM": "NUKU HIVA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 7504
+},
+{
+  "APT": "NTTB",
+  "APT_NOM": "BORA BORA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 28669
+},
+{
+  "APT": "NTTG",
+  "APT_NOM": "RANGIROA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 10021
+},
+{
+  "APT": "NTTH",
+  "APT_NOM": "HUAHINE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 12654
+},
+{
+  "APT": "NTTM",
+  "APT_NOM": "MOOREA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 3256
+},
+{
+  "APT": "NTTP",
+  "APT_NOM": "MAUPITI",
+  "APT_ZON": "OM",
+  "APT_PEQ": 2782
+},
+{
+  "APT": "NTTR",
+  "APT_NOM": "RAIATEA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 25045
+},
+{
+  "APT": "NWWE",
+  "APT_NOM": "ILE DES PINS",
+  "APT_ZON": "OM",
+  "APT_PEQ": 10522
+},
+{
+  "APT": "NWWL",
+  "APT_NOM": "LIFOU",
+  "APT_ZON": "OM",
+  "APT_PEQ": 15464
+},
+{
+  "APT": "NWWM",
+  "APT_NOM": "NOUMEA MAGENTA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 42709
+},
+{
+  "APT": "NWWR",
+  "APT_NOM": "MARE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 8164
+},
+{
+  "APT": "NWWV",
+  "APT_NOM": "OUVEA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 8499
+},
+{
+  "APT": "NWWW",
+  "APT_NOM": "NOUMEA LA TONTOUTA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 54809
+},
+{
+  "APT": "SOCA",
+  "APT_NOM": "CAYENNE-FELIX EBOUE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 46245
+},
+{
+  "APT": "SOOG",
+  "APT_NOM": "ST-GEORGES-DE-L'OYAPOCK",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1098
+},
+{
+  "APT": "TFFF",
+  "APT_NOM": "MARTINIQUE-AIME CESAIRE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 191830
+},
+{
+  "APT": "TFFG",
+  "APT_NOM": "ST-MARTIN-GRAND-CASE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 14663
+},
+{
+  "APT": "TFFJ",
+  "APT_NOM": "ST-BARTHELEMY",
+  "APT_ZON": "OM",
+  "APT_PEQ": 19933
+},
+{
+  "APT": "TFFM",
+  "APT_NOM": "MARIE-GALANTE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1028
+},
+{
+  "APT": "TFFR",
+  "APT_NOM": "POINTE-A-PITRE-LE RAIZET",
+  "APT_ZON": "OM",
+  "APT_PEQ": 209082
+},
+{
+  "APT": "ZZOM",
+  "APT_NOM": " AUTRES APT (OM)",
+  "APT_ZON": "OM",
+  "APT_PEQ": 12127
+},
+{
+  "APT": "NTTE",
+  "APT_NOM": "TETIAROA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1057
+},
+{
+  "APT": "LFVM",
+  "APT_NOM": "MIQUELON",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1348
+},
+{
+  "APT": "NTAR",
+  "APT_NOM": "RURUTU",
+  "APT_ZON": "OM",
+  "APT_PEQ": 3155
+},
+{
+  "APT": "NTTO",
+  "APT_NOM": "HAO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1757
+},
+{
+  "APT": "TFFS",
+  "APT_NOM": "LES SAINTES-TERRE-DE-HAUT",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1190
+},
+{
+  "APT": "SOOA",
+  "APT_NOM": "MARIPASOULA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1702
+},
+{
+  "APT": "NTGC",
+  "APT_NOM": "TIKEHAU",
+  "APT_ZON": "OM",
+  "APT_PEQ": 3100
+},
+{
+  "APT": "NTGT",
+  "APT_NOM": "TAKAPOTO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1326
+},
+{
+  "APT": "NTMN",
+  "APT_NOM": "HIVA OA-ATUONA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 3464
+},
+{
+  "APT": "NWWU",
+  "APT_NOM": "TOUHO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1033
+},
+{
+  "APT": "NTGM",
+  "APT_NOM": "MAKEMO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1010
+},
+{
+  "APT": "NTGF",
+  "APT_NOM": "FAKARAVA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 3280
+},
+{
+  "APT": "NTTX",
+  "APT_NOM": "MURUROA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1073
+},
+{
+  "APT": "NLWF",
+  "APT_NOM": "FUTUNA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1097
+},
+{
+  "APT": "FMEP",
+  "APT_NOM": "ST-PIERRE-PIERREFONDS",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1915
+},
+{
+  "APT": "NTGG",
+  "APT_NOM": "NENGO",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1023
+},
+{
+  "APT": "NTKR",
+  "APT_NOM": "TAKAROA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1008
+},
+{
+  "APT": "SOOS",
+  "APT_NOM": "SAUL",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1126
+},
+{
+  "APT": "NTHE",
+  "APT_NOM": "AHE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1128
+},
+{
+  "APT": "NTUV",
+  "APT_NOM": "VAHITAHI",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1053
+},
+{
+  "APT": "NTGU",
+  "APT_NOM": "ARUTUA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1360
+},
+{
+  "APT": "NTGV",
+  "APT_NOM": "MATAIVA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1050
+},
+{
+  "APT": "NTAV",
+  "APT_NOM": "RAIVAVAE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1033
+},
+{
+  "APT": "NTMP",
+  "APT_NOM": "UA POU",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1034
+},
+{
+  "APT": "NTAM",
+  "APT_NOM": "RIMATARA",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1118
+},
+{
+  "APT": "NTGJ",
+  "APT_NOM": "TOTEGEGIE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1101
+},
+{
+  "APT": "NWWD",
+  "APT_NOM": "KONE",
+  "APT_ZON": "OM",
+  "APT_PEQ": 1021
+}]
+```
+
+</details>

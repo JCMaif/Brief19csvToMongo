@@ -25,7 +25,7 @@ async function processAndExportData() {
                 airports.set(record.APT, {
                     APT: record.APT,
                     APT_NOM: record.APT_NOM,
-                    APT_ZONE: record.APT_ZON,
+                    APT_ZON: record.APT_ZON,
                     APT_PEQ: record.APT_PEQ
                 })
 
@@ -53,9 +53,9 @@ async function processAndExportData() {
 
         // Exporter les aéroports
         const airportCsvContent = [
-            "APT;APT_NOM;APT_ZONE;APT_PEQ", // Entête
+            "APT;APT_NOM;APT_ZON;APT_PEQ", // Entête
             ...Array.from(airports.values()).map(airport =>
-                `${airport.APT};${airport.APT_NOM};${airport.APT_ZONE};${airport.APT_PEQ}`
+                `${airport.APT};${airport.APT_NOM};${airport.APT_ZON};${airport.APT_PEQ}`
             )
         ].join("\n");
         await fs.writeFile(airportFilePath, airportCsvContent, 'utf8');
